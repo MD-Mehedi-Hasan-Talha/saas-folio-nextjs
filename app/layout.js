@@ -1,3 +1,5 @@
+import { Toaster } from "@/components/ui/sonner";
+import SessionProviderWrapper from "@/providers/SessionProviderWrapper";
 import "./globals.css";
 
 export const metadata = {
@@ -6,5 +8,12 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  return <html lang="en">{children}</html>;
+  return (
+    <html lang="en">
+      <body>
+        <SessionProviderWrapper>{children}</SessionProviderWrapper>
+        <Toaster position="top-right" richColors />
+      </body>
+    </html>
+  );
 }

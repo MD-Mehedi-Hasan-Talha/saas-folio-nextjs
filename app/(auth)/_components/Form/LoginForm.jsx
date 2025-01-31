@@ -1,5 +1,6 @@
 "use client";
 
+import { credntialLogin } from "@/actions/userActions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,9 +14,12 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+// import { useSession } from "next-auth/react"; //* for client components
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -29,6 +33,7 @@ const formSchema = z.object({
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,10 +42,21 @@ export default function LoginForm() {
     },
   });
 
-  function onSubmit(values) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values) {
+    try {
+      let response = await credntialLogin(values);
+      if (response.error) {
+        toast.error(response.error);
+        return;
+      }
+
+      // here you can redirect the user to the dashboard or home page
+      toast.success("Logged in successfully!");
+      router.push("/home");
+    } catch (error) {
+      toast.error("Uh oh! Something went wrong!.");
+      console.log(error.message);
+    }
   }
 
   return (
@@ -76,7 +92,7 @@ export default function LoginForm() {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <PasswordInput
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="Your Password"
                   {...field}
                   toggleButton={
