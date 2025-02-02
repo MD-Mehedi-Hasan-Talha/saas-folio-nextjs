@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import Header from "./_components/Header/Header";
 
 export default async function DashboardLayout({ children }) {
   const session = await auth();
@@ -8,5 +9,10 @@ export default async function DashboardLayout({ children }) {
     redirect("/");
   }
 
-  return <div>{children}</div>;
+  return (
+    <div>
+      <Header />
+      {children}
+    </div>
+  );
 }
