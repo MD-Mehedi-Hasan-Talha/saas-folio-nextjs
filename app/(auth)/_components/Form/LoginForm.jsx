@@ -2,18 +2,11 @@
 
 import { credntialLogin } from "@/actions/userActions";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormField, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
+import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 // import { useSession } from "next-auth/react"; //* for client components
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -52,7 +45,7 @@ export default function LoginForm() {
 
       // here you can redirect the user to the dashboard or home page
       toast.success("Logged in successfully!");
-      router.push("/home");
+      router.push("/dashboard");
     } catch (error) {
       toast.error("Uh oh! Something went wrong!.");
       console.log(error.message);
@@ -61,72 +54,59 @@ export default function LoginForm() {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-2 border p-3 rounded-lg shadow-md min-w-[90%] md:min-w-[50%] lg:min-w-[33%] bg-white"
-      >
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold">Welcome Back</h2>
-          <span className="block text-gray-500 text-sm">
-            Please Login to Your Account
-          </span>
-        </div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="Your Email Address" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input {...field} type="email" placeholder="Enter your email" />
+              <FormMessage className="mt-2" />
+            </div>
           )}
         />
+
         <FormField
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <PasswordInput
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Your Password"
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <Input
                   {...field}
-                  toggleButton={
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="white"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent border rounded-tl-none rounded-bl-none"
-                      onClick={() => setShowPassword((prev) => !prev)}
-                    >
-                      {showPassword ? (
-                        <EyeIcon className="h-4 w-4" aria-hidden="true" />
-                      ) : (
-                        <EyeOffIcon className="h-4 w-4" aria-hidden="true" />
-                      )}
-                      <span className="sr-only">
-                        {showPassword ? "Hide password" : "Show password"}
-                      </span>
-                    </Button>
-                  }
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
                 />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-0 top-0"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setShowPassword(!showPassword);
+                  }}
+                >
+                  {showPassword ? (
+                    <Eye className="h-4 w-4" />
+                  ) : (
+                    <EyeOff className="h-4 w-4" />
+                  )}
+                </Button>
+                <FormMessage className="mt-2" />
+              </div>
+            </div>
           )}
         />
-        <div className="w-full pt-4">
-          <Button type="submit" className="w-full">
-            Submit
-          </Button>
-        </div>
-        <p className="pt-4 text-center">
-          Don't have an account?
-          <Link href="/signup" className="text-secondary hover:underline ml-1">
+
+        <Button className="w-full" size="lg">
+          Sign In
+        </Button>
+
+        <p className="text-center text-sm text-muted-foreground">
+          Don't have an account?{" "}
+          <Link href="/signup" className="text-primary hover:underline">
             Sign up
           </Link>
         </p>

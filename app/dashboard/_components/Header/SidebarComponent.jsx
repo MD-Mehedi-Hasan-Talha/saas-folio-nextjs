@@ -64,7 +64,7 @@ export default function SidebarComponent() {
   const pathname = usePathname();
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup className="md:mt-20">
@@ -93,7 +93,10 @@ export default function SidebarComponent() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              asChild
+            >
               <span className="cursor-pointer">
                 <LogOut /> <span>Logout</span>
               </span>

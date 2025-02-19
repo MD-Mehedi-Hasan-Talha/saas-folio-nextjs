@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import SessionProviderWrapper from "@/providers/SessionProviderWrapper";
 import "./globals.css";
@@ -11,8 +12,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <SessionProviderWrapper>{children}</SessionProviderWrapper>
-        <Toaster position="top-right" richColors />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <SessionProviderWrapper>{children}</SessionProviderWrapper>
+          <Toaster position="top-right" richColors />
+        </ThemeProvider>
       </body>
     </html>
   );

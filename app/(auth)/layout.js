@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import Header from "./_components/Header/Header";
 
 export default async function AuthLayout({ children }) {
   const session = await auth();
@@ -9,10 +8,5 @@ export default async function AuthLayout({ children }) {
     redirect("/home");
   }
 
-  return (
-    <div className="bg-gray-100 w-full h-screen">
-      <Header hrefProps={"/signup"} name={"Signup"} />
-      {children}
-    </div>
-  );
+  return <div className="bg-gray-100 w-full h-screen">{children}</div>;
 }
